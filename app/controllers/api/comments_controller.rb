@@ -2,32 +2,20 @@ class Api::CommentsController < ApplicationController
 	before_action :set_post
 
 	def index
-		render json: @post.comments.all.to_json
+		render json: @post.comments.paginate(page: params[:page], per_page: 10).to_json
 	end
-
-	def show
-		render json: Comment.all.to_json
-	end
-	
 
 	def create
-		@comment=@post.comments.build(page_params)
-		if @comment.save
-			render json: {
-				status: 200,
-				message: 'vote successfully created',
-				comment: @comment
-			}.to_json
-		else
-			render json: {
-				status: 501,
-				message: 'Unable to create '
-			}
-		end 
+		comment = @post.comments.create!(page_params)
+		render json: {
+			status: 200,
+			message: 'Successfully comment created'
+		}.to_json
 	end
+
 	def destroy
-		@comment=Comment.find(params[:id])
-		@comment.destroy
+		comment = Comment.find(params[:id])
+		comment.destroy
 		render json: {
 			message: "successfully deleted"
 		}
@@ -35,13 +23,10 @@ class Api::CommentsController < ApplicationController
 	private
 
 	  def set_post
-	  	puts params
-	  	@post=Post.find_by(id: params[:post_id])
-
+	  	@post = Post.find_by(id: params[:post_id])
 	  end
 
 	  def page_params
-	  	puts params
-	  	params.permit(:answer)
+	  	params.require(:comment).permit(:answer)
 	  end
 end
