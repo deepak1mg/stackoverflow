@@ -16,12 +16,13 @@ class Api::SessionsController < ApplicationController
 
 	def destroy
     	session[:user_id] = nil
-		render json:{	message: "Successfully logged out"}.to_json
+		render json:{ message: "Successfully logged out"}.to_json
 	end
 
 	private
 	def store_session_value
 		session[:user_id] = @auth.auth_token 
 		session[:expires_at] = 2.days.from_now
+		@auth.active!
 	end
 end

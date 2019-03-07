@@ -1,5 +1,5 @@
 class Api::PostsController < ApplicationController
-	before_action :set_post
+	before_action :set_post, only: [:upvote, :downvote, :count_votes]
 	before_action :current_user, only: [:create, :upvote, :downvote]
 	
 	def index

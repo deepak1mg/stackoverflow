@@ -7,9 +7,14 @@ class Api::BadgesController < ApplicationController
 
   def create
     badge = @user.badges.create!
-    badge.beginner! if @user.posts.size < 5
-    badge.intermediate! if @user.posts.size > 5
-    badge.advanced! if @user.posts.size > 10
+    case @user.posts.size
+    when 0..5
+      badge.beginner!
+    when 5..10
+      badge.intermediate!
+    else
+      badge.advanced!
+    end
     render json: { message: 'Badge Created',
       badge: badge
     }.to_json

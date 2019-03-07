@@ -10,39 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190306124956) do
+ActiveRecord::Schema.define(version: 20190306093259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "answers", force: :cascade do |t|
     t.text "answer"
+    t.integer "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "post_id"
+    t.index ["post_id"], name: "index_answers_on_post_id"
   end
 
   create_table "authdetails", force: :cascade do |t|
     t.string "auth_token"
+    t.integer "status"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.datetime "expiry_time"
-    t.integer "status"
+    t.index ["user_id"], name: "index_authdetails_on_user_id"
   end
 
   create_table "badges", force: :cascade do |t|
     t.integer "badge_type"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.index ["user_id"], name: "index_badges_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
     t.string "commentable_type"
     t.integer "commentable_id"
-    t.integer "user_id"
     t.string "body"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -50,9 +52,10 @@ ActiveRecord::Schema.define(version: 20190306124956) do
   create_table "posts", force: :cascade do |t|
     t.text "title"
     t.text "body"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -4,7 +4,7 @@ module AuthModule
 		def login(user,pass)
 			@user, @pass = user, pass
 			return if user_login == false
-			@auth = @user.authdetails.create!(auth_token: SecureRandom.uuid, expiry_time: 2.days.from_now)
+			@auth = @user.authdetails.create!(auth_token: SecureRandom.uuid)
 		end
 
 		def hash_passkey(user)
