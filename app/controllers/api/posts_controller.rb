@@ -20,6 +20,7 @@ class Api::PostsController < ApplicationController
 			}.to_json
 	end
 
+
 	def upvote
 		@post.liked_by current_user
 		render json:{ message: "upvote created"} 

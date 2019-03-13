@@ -7,6 +7,7 @@ class Api::UsersController < ApplicationController
 	def create
 		user = User.create!(users_params)
 		AuthModule::AuthManager.new.hash_passkey(user)
+		#AuthModule::AuthManager.new.login(user, params[:password])
 		render json:{ message: "User created"}
 	end
 

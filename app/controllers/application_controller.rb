@@ -3,12 +3,6 @@ class ApplicationController < ActionController::Base
   
   #helper_method :current_user
  
-  include Concerns::Errors
-  include Concerns::ErrorHandlers
-  include Concerns::ActionValidator
-  include Concerns::ThreadUserable
-  include Concerns::Cacheable
-  include Concerns::ParamValidator
 
   def current_user
     @auth = Authdetail.find_by_auth_token(auth_token)
