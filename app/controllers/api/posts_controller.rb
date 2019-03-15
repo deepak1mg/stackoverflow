@@ -1,6 +1,6 @@
 class Api::PostsController < ApplicationController
-	before_action :set_post, only: [:upvote, :downvote, :count_votes]
-	before_action :current_user, only: [:create, :upvote, :downvote]
+	before_action :set_post, only: [:upvote, :downvote, :count_votes, :update]
+	before_action :current_user, only: [:create, :upvote, :downvote, :update]
 	
 	def index
 		render json: Post.paginate(page: params[:page]).to_json
@@ -18,6 +18,11 @@ class Api::PostsController < ApplicationController
 			message: 'Post successfully created',
 			post: post
 			}.to_json
+	end
+
+	def update
+		return @post.modify(params[:body]) if @post.id == current_user.id
+		flash[:alert] = "You are not authorized to chnage this post"
 	end
 
 

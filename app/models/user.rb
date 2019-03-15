@@ -12,7 +12,31 @@ class User < ApplicationRecord
 
 	before_validation :init
 
+	attr_accessor :sent_at
+
+	# attr_accessor :remember_token
+
 	def init
 		self.email = email.downcase
 	end
+
+	def send_password_reset_request
+		user.authdetails.create!(auth_token: SecureRandom.uuid)
+		
+	end
+
+	# def self.digest(message)
+ #    	Digest::SHA256.hexdigest(message)[0..20]
+ #  	end
+
+ #  	def self.new_token
+ #    	SecureRandom.urlsafe_base64
+ #  	end
+
+ #  	def remember
+ #  		self.remember_token = User.new_token
+ #  		update_attribute(:remember_digest, User.digest(remember_token)) 
+ #  		cookie_remember
+ #  	end
+
 end

@@ -5,20 +5,32 @@ class Api::SessionsController < ApplicationController
 	def create
     	user = User.find_by_email(params[:email])
 		if @auth = AuthModule::AuthManager.new.login(user, params[:password])
-			store_session_value
+			cookies.permanent[:auth_token]=@auth.auth_token if params[:remember_me]
+			cookies[:auth_token]=@auth.auth_token 
+			#store_session_value
+			#cookie_remember
 			render json: {
 				message: "Logged in ",
 				user: user.email,
-				session_id: session[:user_id]
+				session_id: cookies[:auth_token]
 			}
 		end
 	end
 
+	# def cookie_remember
+	# 	@user.remember
+	# 	cookies.permanent.signed[:user_id] = @auth.auth_token 
+ 	#   cookies.permanent[:remember_token] = user.remember_token
+	# end
+
 	def destroy
-    	session[:user_id] = nil
-    	#@current_user = nil
+		cookies.delete(:auth_token)
+    	#session[:user_id] = nil
+    	@current_user = nil
 		render json:{ message: "Successfully logged out"}.to_json
 	end
+
+	
 
 	private
 	def store_session_value
@@ -26,4 +38,6 @@ class Api::SessionsController < ApplicationController
 		session[:expires_at] = 2.days.from_now
 		@auth.active!
 	end
+
+
 end

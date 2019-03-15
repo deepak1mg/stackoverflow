@@ -13,6 +13,7 @@ module AuthModule
 			@user.save
 		end
 
+
 		private
 
 		def user_login

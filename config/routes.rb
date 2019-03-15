@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
     post 'login', to: 'sessions#create'
     get 'logout', to:'sessions#destroy', as: :logout
-
+    resources :password_resets
     resources :posts do
     	member do
       	post :like , to: 'posts#upvote'
