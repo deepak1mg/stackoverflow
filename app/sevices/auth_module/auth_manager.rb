@@ -8,9 +8,9 @@ module AuthModule
 		end
 
 		def hash_passkey(user)
-			@user=user
-			@user.password = password_hash(@user.password, @user.created_at)
-			@user.save
+			#@user=user
+			user.password = password_hash(user.password, user.created_at)
+			user.save
 		end
 
 

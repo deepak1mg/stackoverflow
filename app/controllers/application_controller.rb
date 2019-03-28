@@ -3,12 +3,13 @@ class ApplicationController < ActionController::Base
   
   #helper_method :current_user
  
- require 'digest'
+ #require 'digest'
 
   def current_user
-    @auth = Authdetail.find_by_auth_token(cookies[:auth_token]) if cookies[:auth_token] 
+    auth = Authdetail.find_by_auth_token(cookies[:auth_token]) if cookies[:auth_token] 
     #return @current_user = nil if if_expired == true
-    @current_user ||= @auth.user
+
+    @current_user ||= auth.user
     #return @current_user = @auth.user if 
   end
 

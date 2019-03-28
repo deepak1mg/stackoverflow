@@ -4,9 +4,10 @@ class Api::SessionsController < ApplicationController
 	
 	def create
     	user = User.find_by_email(params[:email])
-		if @auth = AuthModule::AuthManager.new.login(user, params[:password])
-			cookies.permanent[:auth_token]=@auth.auth_token if params[:remember_me]
-			cookies[:auth_token]=@auth.auth_token 
+		if auth = AuthModule::AuthManager.new.login(user, params[:password])
+			cookies.permanent[:auth_token]=auth.auth_token if params[:remember_me]
+			cookies[:auth_token]=auth.auth_token
+
 			#store_session_value
 			#cookie_remember
 			render json: {

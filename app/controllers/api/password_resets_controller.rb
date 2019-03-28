@@ -15,5 +15,6 @@ class Api::PasswordResetsController < ApplicationController
 			render json: {
 				message: 'password set'
 			}
+
 	end
 end

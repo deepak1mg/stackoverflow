@@ -1,11 +1,20 @@
 class Api::CommentsController < ApplicationController
-	before_action :set_post, only: [:comment_for_post]
-	before_action :set_answer, only: [:comment_for_answer]
+	before_action :set_post, only: [:comment_for_post,:post_comments]
+	before_action :set_answer, only: [:comment_for_answer, :answers_comments]
 	before_action :current_user, only: [:comment_for_answer, :comment_for_post]
 
-	def index
-		render json: Answer.comments.paginate(page: params[:page], per_page: 10).to_json if params[:id]
-		render json: Post.comments.paginate(page: params[:page], per_page: 10).to_json if params[:id]
+	# def index
+	# 	debugger
+	# 	render json: @post.comments.paginate(page: params[:page], per_page: 10).to_json if params[:id]
+	# 	render json: @answer.comments.paginate(page: params[:page], per_page: 10).to_json if params[:id]
+	# end
+
+	def post_comments
+		render json: @post.comments.paginate(page: params[:page], per_page: 10).to_json
+	end
+
+	def answers_comments
+		render json: @answer.comments.paginate(page: params[:page], per_page: 10).to_json
 	end
 
 	def comment_for_post
@@ -22,17 +31,14 @@ class Api::CommentsController < ApplicationController
 		}
 	end
 
-
-
 	private
 	
 	def set_post
 		@post = Post.find(params[:id])
-
 	end
 
 	def set_answer
-		@post = Answer.find(params[:id])
+		@answer = Answer.find(params[:id])
 	end
 
 end
